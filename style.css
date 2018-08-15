@@ -1,0 +1,24 @@
+* {
+  font-family: 'Arial';
+  text-align: center;
+}
+
+body {
+  background: rgb(235, 238, 193);
+}
+
+table {
+  border: 5px solid black;
+}
+
+td {
+  padding: 15px;
+  border-radius: 15px;
+  border: 1px solid black;
+  background: white;
+}
+
+th {
+  background-color: purple;
+  color: white;
+}
