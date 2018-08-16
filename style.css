@@ -18,6 +18,10 @@ td {
   background: white;
 }
 
+td:hover {
+  background: red;
+}
+
 th {
   background-color: purple;
   color: white;
