@@ -1,36 +1,15 @@
 'use strict';
-// IGNORE - DAY 1 TEST CALCULATIONS
-// var storePike = {
-//   name: '1st and Pike',
-//   minimumCustomer: 23,
-//   maximumCustomer: 65,
-//   averageCookiePerSale: 6.3,
-//   totalPerHour: [],
-
-//   customersPerHourRando:function() {
-//     return Math.random() * (this.maximumCustomer - this.minimumCustomer) + this.minimumCustomer;
-//   }
-// };
-
-// for(var ii = 0; ii <= 14; ii++) {
-//   var result = storePike.customersPerHourRando() * storePike.averageCookiePerSale;
-//   storePike.totalPerHour.push(result);
-
-//   // totalPerHour
-// }
-
-// var totalPerHour = [];
 
 var allStoreSales = [];
 
 var salesProjectionsTable = document.getElementById('salesProjectionsTable');
 
 function SalesData(name, minimumCustomer, maximumCustomer, averageCookiePerSale) {
-
   this.name = name;
   this.min = minimumCustomer;
   this.max = maximumCustomer;
   this.avg = averageCookiePerSale;
+  this.hourlySales = [];
   allStoreSales.push(this);
 }
 
@@ -39,32 +18,67 @@ new SalesData ('SeaTac Airport',	3,	24,	1.2);
 new SalesData ('Seattle Center',	11,	38,	3.7);
 new SalesData ('Capitol Hill',	20,	38,	2.3);
 new SalesData ('Alki', 2,	16,	4.6);
-    
-SalesData.prototype.render = function() {
 
+// Generates random sales number
+SalesData.prototype.customersPerHourRando = function() {
+  return Math.random() * (this.max - this.min) + this.min;
+};
+
+SalesData.prototype.render = function() {
   var trEl = document.createElement('tr');
 
   var tdEl = document.createElement('td');
   tdEl.textContent = this.name;
   trEl.appendChild(tdEl);
 
-  var tdEl = document.createElement('td');
-  tdEl.textContent = this.min;
-  trEl.appendChild(tdEl);
+  var dailyTotal = 0;
+  var hourlyTotal = 0;
 
-  var tdEl = document.createElement('td');
-  tdEl.textContent = this.max;
-  trEl.appendChild(tdEl);
+  for ( var i = 0; i < 14; i++) {
+    hourlyTotal = Math.floor(this.avg * this.customersPerHourRando());
+    tdEl = document.createElement('td');
+    tdEl.textContent = hourlyTotal;
+    dailyTotal = dailyTotal + hourlyTotal;
+    trEl.appendChild(tdEl);
+    this.hourlySales.push(hourlyTotal);
+  }
 
-  var tdEl = document.createElement('td');
-  tdEl.textContent = this.avg;
+  tdEl = document.createElement('td');
+  tdEl.textContent = dailyTotal;
   trEl.appendChild(tdEl);
 
   salesProjectionsTable.appendChild(trEl);
 };
+// This section created the footer row with the hourly totals
+function makeFooterRow () {
+  var trEl = document.createElement('tr');
+  var tdEl = document.createElement('td');
+  tdEl.textContent = 'Hourly Total';
+  trEl.appendChild(tdEl);
 
+  var totalSales = 0;
+  var hourlyTotal = 0;
+  for ( var i = 0; i < 14; i++) {
+
+    for (var n = 0; n < allStoreSales.length; n++) {
+      hourlyTotal = allStoreSales[n].hourlySales[i] + hourlyTotal;
+    }
+    // All Location Daily Total
+    totalSales = totalSales + hourlyTotal;
+    tdEl = document.createElement('td');
+    tdEl.textContent = hourlyTotal;
+    trEl.appendChild(tdEl);
+  }
+
+  tdEl = document.createElement('td');
+  tdEl.textContent = totalSales;
+  trEl.appendChild(tdEl);
+
+  salesProjectionsTable.appendChild(trEl);
+
+}
+// Function to create the header row with hourly columns
 function makeHeaderRow() {
-
   var trEl = document.createElement('tr');
 
   var thEl = document.createElement('th');
@@ -72,18 +86,64 @@ function makeHeaderRow() {
   trEl.appendChild(thEl);
 
 
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Minimum Customers';
+  thEl = document.createElement('th');
+  thEl.textContent = '6:00am';
   trEl.appendChild(thEl);
 
-
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Maximum Customers';
+  thEl = document.createElement('th');
+  thEl.textContent = '7:00am';
   trEl.appendChild(thEl);
 
+  thEl = document.createElement('th');
+  thEl.textContent = '8:00am';
+  trEl.appendChild(thEl);
 
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Average Sales Per Customer';
+  thEl = document.createElement('th');
+  thEl.textContent = '9:00am';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '10:00am';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '11:00am';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '12:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '1:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '2:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '3:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '4:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '5:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '6:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = '7:00pm';
+  trEl.appendChild(thEl);
+
+  thEl = document.createElement('th');
+  thEl.textContent = 'Daily Location Total';
   trEl.appendChild(thEl);
 
   salesProjectionsTable.appendChild(trEl);
@@ -97,3 +157,4 @@ function renderAllStoreSales() {
 
 makeHeaderRow();
 renderAllStoreSales();
+makeFooterRow ();
