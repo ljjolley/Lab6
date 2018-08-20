@@ -13,6 +13,22 @@
   <h2>Table of the weekly sales projections for Paul's Famous Salmon Cookies
   </h2>
 
+  <form onsubmit="addStore(event)">
+    <fieldset>
+      <legend>Add Store</legend>
+      Store Name: <input type="text" id="storeName"><br>
+      Minimum number of customers: <input type="text" id="minCustomer">
+      <br>
+      Maximum number of customers: <input type="text" id="maxCustomer">
+      <br/>
+      Average cookies per sale: <input type="text" id="averageCookie">
+      <br/>
+      <button>Add Store</button>
+
+    </fieldset>
+    
+  </form>
+
   <table id="salesProjectionsTable"></table>
   <script src="app.js"></script>
 </body>

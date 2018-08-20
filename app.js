@@ -50,16 +50,16 @@ SalesData.prototype.render = function() {
   salesProjectionsTable.appendChild(trEl);
 };
 // This section created the footer row with the hourly totals
+var footerRow = document.createElement('tr');
 function makeFooterRow () {
-  var trEl = document.createElement('tr');
   var tdEl = document.createElement('td');
   tdEl.textContent = 'Hourly Total';
-  trEl.appendChild(tdEl);
+  footerRow.appendChild(tdEl);
 
   var totalSales = 0;
-  var hourlyTotal = 0;
-  for ( var i = 0; i < 14; i++) {
 
+  for ( var i = 0; i < 14; i++) {
+    var hourlyTotal = 0;
     for (var n = 0; n < allStoreSales.length; n++) {
       hourlyTotal = allStoreSales[n].hourlySales[i] + hourlyTotal;
     }
@@ -67,14 +67,14 @@ function makeFooterRow () {
     totalSales = totalSales + hourlyTotal;
     tdEl = document.createElement('td');
     tdEl.textContent = hourlyTotal;
-    trEl.appendChild(tdEl);
+    footerRow.appendChild(tdEl);
   }
 
   tdEl = document.createElement('td');
   tdEl.textContent = totalSales;
-  trEl.appendChild(tdEl);
+  footerRow.appendChild(tdEl);
 
-  salesProjectionsTable.appendChild(trEl);
+  salesProjectionsTable.appendChild(footerRow);
 
 }
 // Function to create the header row with hourly columns
@@ -155,6 +155,20 @@ function renderAllStoreSales() {
   }
 }
 
+// Actions for Button
+
+function addStore(event) {
+  event.preventDefault();
+  var formStoreName = document.getElementById('storeName').value;
+  var formMinCustomer = document.getElementById('minCustomer').value;
+  var formMaxCustomer = document.getElementById('maxCustomer').value;
+  var formAvgCookie = document.getElementById('averageCookie').value;
+  var formData = new SalesData (formStoreName, formMinCustomer,	formMaxCustomer,	formAvgCookie);
+  footerRow.innerHTML='';
+  formData.render();
+  makeFooterRow();
+  return false;
+}
 makeHeaderRow();
 renderAllStoreSales();
 makeFooterRow ();
